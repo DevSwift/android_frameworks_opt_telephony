@@ -1701,7 +1701,8 @@ public interface CommandsInterface {
     public void testingEmergencyCall();
 
     /**
-     * Ask the RIL about the presence of back-compat flags
+     * @hide
+     * CM-specific: Ask the RIL about the presence of back-compat flags
      */
      public boolean needsOldRilFeature(String feature);
 
