@@ -23,7 +23,6 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.telephony.Rlog;
 import android.telephony.TelephonyManager;
-import android.os.SystemProperties;
 
 import com.android.internal.telephony.cdma.CDMALTEPhone;
 import com.android.internal.telephony.cdma.CDMAPhone;
@@ -32,8 +31,6 @@ import com.android.internal.telephony.gsm.GSMPhone;
 import com.android.internal.telephony.sip.SipPhone;
 import com.android.internal.telephony.sip.SipPhoneFactory;
 import com.android.internal.telephony.uicc.UiccController;
-
-import java.lang.reflect.Constructor;
 
 /**
  * {@hide}
@@ -118,15 +115,7 @@ public class PhoneFactory {
                 Rlog.i(LOG_TAG, "RILClassname is " + sRILClassname);
 
                 // Use reflection to construct the RIL class (defaults to RIL)
-                try {
-                    sCommandsInterface = instantiateCustomRIL(
-                                            sRILClassname, context, networkMode, cdmaSubscription);
-                } catch (Exception e) {
-                    // 6 different types of exceptions are thrown here that it's
-                    // easier to just catch Exception as our "error handling" is the same.
-                    Rlog.e(LOG_TAG, "Unable to construct custom RIL class", e);
-                    sCommandsInterface = new RIL(context, networkMode, cdmaSubscription);
-                }
+                sCommandsInterface = new RIL(context, networkMode, cdmaSubscription);
 
                 // Instantiate UiccController so that all other classes can just call getInstance()
                 UiccController.make(context, sCommandsInterface);
